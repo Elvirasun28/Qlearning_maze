@@ -1,5 +1,4 @@
 import random
-from math import exp 
 
 class Robot(object):
 
@@ -43,11 +42,11 @@ class Robot(object):
         """
         if self.testing:
             # TODO 1. No random choice when testing
-            self.epsilon = 0
+            pass 
         else:
             # TODO 2. Update parameters when learning
-            self.epsilon = self.epsilon0 * exp(-0.3 * self.t)
             self.t += 1
+            self.epsilon = self.epsilon ** self.t
 
         return self.epsilon
 
@@ -70,7 +69,7 @@ class Robot(object):
         # not change it.
         self.Qtable.setdefault(state,{a: 0.0 for a in self.valid_actions})
         
-    def get_highest(self, state):
+    def max_Q_Value(self, state):
         return max(self.Qtable[self.state], key=self.Qtable[self.state].get)
     
     def choose_action(self):
@@ -94,11 +93,11 @@ class Robot(object):
                 return random.choice(self.valid_actions)
             else:
                 # TODO 7. Return action with highest q value
-                return self.get_highest(self.state)
+                return self.max_Q_Value(self.state)
         elif self.testing:
             
             # TODO 7. choose action with highest q value
-            return self.get_highest(self.state)
+            return self.max_Q_Value(self.state)
         else:
             # TODO 6. Return random choose aciton
             return random.choice(self.valid_actions)
